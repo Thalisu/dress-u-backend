@@ -14,7 +14,7 @@ namespace dress_u_backend.data
 
         }
 
-    public DbSet<Cloth> Cloth { get; set; }
-    public DbSet<Description> Description { get; set;}
+        public DbSet<Cloth> Cloths { get; set; }
+        public DbSet<Description> Description { get; set; }
     }
 }

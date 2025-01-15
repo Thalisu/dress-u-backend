@@ -11,12 +11,11 @@ namespace dress_u_backend.models
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
 
-        [Column (TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
-        [Column (TypeName = "float(1, 2)")]
+        [Column(TypeName = "float(1, 2)")]
         public float Discount { get; set; }
         public string[] Images { get; set; } = [];
-        public int? DescriptionId { get; set; }
         public Description? Description { get; set; }
     }
 }

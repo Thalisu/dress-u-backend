@@ -7,6 +7,7 @@ namespace dress_u_backend.models
 {
     public class Description
     {
+        public int Id { get; set; }
         public int ClothId { get; set; }
         public Cloth Cloth { get; set; } = null!;
         public string About { get; set; } = "";

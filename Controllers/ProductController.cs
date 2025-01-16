@@ -64,5 +64,19 @@ namespace dress_u_backend.Controllers
 
             return Ok(cloth.ToClothDto());
         }
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var cloth = _context.Cloths.Find(id);
+            if (cloth == null)
+            {
+                return NotFound();
+            }
+
+            _context.Cloths.Remove(cloth);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }

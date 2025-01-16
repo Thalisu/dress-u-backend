@@ -16,5 +16,6 @@ namespace dress_u_backend.data
 
         public DbSet<Cloth> Cloths { get; set; }
         public DbSet<Description> Description { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

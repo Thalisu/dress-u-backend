@@ -45,5 +45,24 @@ namespace dress_u_backend.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());
         }
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
+        {
+            var cloth = _context.Cloths.Find(id);
+            if (cloth == null)
+            {
+                return NotFound();
+            }
+
+            cloth.Title = clothDto.Title;
+            cloth.Price = clothDto.Price;
+            cloth.Discount = clothDto.Discount;
+            cloth.Images = clothDto.Images;
+            cloth.Categories = clothDto.Categories;
+            cloth.Description = clothDto.Description;
+            _context.SaveChanges();
+
+            return Ok(cloth.ToClothDto());
+        }
     }
 }

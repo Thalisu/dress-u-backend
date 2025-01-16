@@ -1,4 +1,6 @@
 using dress_u_backend.data;
+using dress_u_backend.interfaces;
+using dress_u_backend.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IClothRepository, ClothRepository>();
 
 var app = builder.Build();
 

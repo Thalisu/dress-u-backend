@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.data;
 using dress_u_backend.Dtos.Cloth;
+using dress_u_backend.interfaces;
 using dress_u_backend.Mappers;
+using dress_u_backend.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +16,16 @@ namespace dress_u_backend.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        public ProductController(ApplicationDBContext context)
+        private readonly IClothRepository _clothRepo;
+        public ProductController(IClothRepository clothRepo)
         {
-            _context = context;
+            _clothRepo = clothRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var cloths = await _context.Cloths.ToListAsync();
+            var cloths = await _clothRepo.GetAllAsync();
             var clothDto = cloths.Select(c => c.ToClothDto());
             return Ok(clothDto);
         }
@@ -31,52 +33,40 @@ namespace dress_u_backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var product = await _context.Cloths.FindAsync(id);
-            if (product == null)
+            var cloth = await _clothRepo.GetByIdAsync(id);
+            if (cloth == null)
             {
                 return NotFound();
             }
 
-            return Ok(product.ToClothDto());
+            return Ok(cloth);
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateClothRequestDto clothDto)
         {
             var cloth = clothDto.ToClothFromCreateDto();
-            await _context.Cloths.AddAsync(cloth);
-            await _context.SaveChangesAsync();
+            await _clothRepo.CreateAsync(cloth);
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
-            var cloth = await _context.Cloths.FindAsync(id);
+            var cloth = await _clothRepo.UpdateAsync(id, clothDto);
             if (cloth == null)
             {
                 return NotFound();
             }
 
-            cloth.Title = clothDto.Title;
-            cloth.Price = clothDto.Price;
-            cloth.Discount = clothDto.Discount;
-            cloth.Images = clothDto.Images;
-            cloth.Categories = clothDto.Categories;
-            cloth.Description = clothDto.Description;
-            await _context.SaveChangesAsync();
-
-            return Ok(cloth.ToClothDto());
+            return Ok(cloth);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var cloth = await _context.Cloths.FirstOrDefaultAsync(x => x.Id == id);
+            var cloth = await _clothRepo.DeleteAsync(id);
             if (cloth == null)
             {
                 return NotFound();
             }
-
-            _context.Cloths.Remove(cloth);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

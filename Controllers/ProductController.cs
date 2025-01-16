@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.data;
+using dress_u_backend.Dtos.Cloth;
+using dress_u_backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dress_u_backend.Controllers
@@ -20,7 +22,7 @@ namespace dress_u_backend.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var products = _context.Cloths.ToList();
+            var products = _context.Cloths.ToList().Select(c => c.ToClothDto());
             return Ok(products);
         }
 
@@ -33,7 +35,15 @@ namespace dress_u_backend.Controllers
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(product.ToClothDto());
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateClothRequestDto clothDto)
+        {
+            var cloth = clothDto.ToClothFromCreateDto();
+            _context.Cloths.Add(cloth);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());
         }
     }
 }

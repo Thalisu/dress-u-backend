@@ -12,7 +12,7 @@ namespace dress_u_backend.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     [Migration("20250115154604_init")]
-    partial class init
+    partial class init_migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

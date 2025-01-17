@@ -5,7 +5,7 @@
 namespace dress_u_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class init_migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -36,20 +36,21 @@ namespace dress_u_backend.Repository
         }
         public async Task<ClothDto?> UpdateAsync(int id, UpdateClothRequestDto clothDto)
         {
-            var cloth = await _context.Cloths.FindAsync(id);
-            if (cloth == null)
+            var clothModel = clothDto.ToClothFromUpdateDto();
+            var existingCloth = await _context.Cloths.FindAsync(id);
+            if (existingCloth == null)
             {
                 return null;
             }
 
-            cloth.Title = clothDto.Title;
-            cloth.Price = clothDto.Price;
-            cloth.Discount = clothDto.Discount;
-            cloth.Images = clothDto.Images;
-            cloth.Categories = clothDto.Categories;
-            cloth.Description = clothDto.Description;
+            existingCloth.Title = clothModel.Title;
+            existingCloth.Price = clothModel.Price;
+            existingCloth.Discount = clothModel.Discount;
+            existingCloth.Images = clothModel.Images;
+            existingCloth.Categories = clothModel.Categories;
+            existingCloth.Description = clothModel.Description;
             await _context.SaveChangesAsync();
-            return cloth.ToClothDto();
+            return existingCloth.ToClothDto();
         }
         public async Task<Cloth?> DeleteAsync(int id)
         {

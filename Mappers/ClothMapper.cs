@@ -36,5 +36,17 @@ namespace dress_u_backend.Mappers
                 Description = clothDto.Description,
             };
         }
+        public static Cloth ToClothFromUpdateDto(this UpdateClothRequestDto clothDto)
+        {
+            return new Cloth
+            {
+                Title = clothDto.Title,
+                Price = clothDto.Price,
+                Discount = clothDto.Discount,
+                Images = clothDto.Images,
+                Categories = clothDto.Categories,
+                Description = clothDto.Description,
+            };
+        }
     }
 }

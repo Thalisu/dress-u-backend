@@ -12,15 +12,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dress_u_backend.Controllers
 {
-    [Route("/product")]
+    [Route("/cloths")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ClothController(IClothRepository clothRepo) : ControllerBase
     {
-        private readonly IClothRepository _clothRepo;
-        public ProductController(IClothRepository clothRepo)
-        {
-            _clothRepo = clothRepo;
-        }
+        private readonly IClothRepository _clothRepo = clothRepo;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

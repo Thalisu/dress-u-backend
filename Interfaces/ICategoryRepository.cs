@@ -11,8 +11,8 @@ namespace dress_u_backend.interfaces
     {
         Task<List<Category>> GetAllAsync();
         Task<CategoryDto?> GetByIdAsync(int id);
-        Task<Category> CreateAsync(Cloth cloth);
-        Task<CategoryDto?> UpdateAsync(int id, UpdateCategoryRequestDto clothDto);
+        Task<Category> CreateAsync(Category category);
+        Task<CategoryDto?> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto);
         Task<Category?> DeleteAsync(int id);
     }
 }

@@ -8,7 +8,7 @@ namespace dress_u_backend.models
     public class Category
     {
         public int Id { get; set; }
-        public List<Cloth> Cloths { get; } = [];
+        public ICollection<Cloth> Cloths { get; set; } = [];
         public string Type { get; set; } = "";
     }
 }

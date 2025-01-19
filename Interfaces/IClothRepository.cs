@@ -14,5 +14,7 @@ namespace dress_u_backend.interfaces
         Task<Cloth> CreateAsync(Cloth cloth);
         Task<ClothDto?> UpdateAsync(int id, UpdateClothRequestDto clothDto);
         Task<Cloth?> DeleteAsync(int id);
+        Task<bool> ClothExists(int id);
+        Task<bool> CategoryExists(int id);
     }
 }

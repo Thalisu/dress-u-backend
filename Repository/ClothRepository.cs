@@ -64,5 +64,13 @@ namespace dress_u_backend.Repository
             await _context.SaveChangesAsync();
             return cloth;
         }
+        public async Task<bool> ClothExists(int id)
+        {
+            return await _context.Cloths.AnyAsync(c => c.Id == id);
+        }
+        public async Task<bool> CategoryExists(int id)
+        {
+            return await _context.Categories.AnyAsync(c => c.Id == id);
+        }
     }
 }

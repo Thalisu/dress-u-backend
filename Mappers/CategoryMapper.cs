@@ -15,7 +15,7 @@ namespace dress_u_backend.Mappers
             {
                 Id = category.Id,
                 Type = category.Type,
-                Cloths = category.Cloths,
+                Cloths = [.. category.Cloths.Select(c => c.ToClothDto())],
             };
         }
 
@@ -31,7 +31,7 @@ namespace dress_u_backend.Mappers
             return new Category
             {
                 Type = categoryDto.Type,
-                Cloths = categoryDto.Cloths,
+                /*                 Cloths = categoryDto.Cloths, */
             };
         }
     }

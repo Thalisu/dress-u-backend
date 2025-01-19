@@ -8,7 +8,6 @@ namespace dress_u_backend.Dtos.Category
 {
     public class UpdateCategoryRequestDto
     {
-        public List<ClothDto> Cloths { get; set; } = [];
         public string Type { get; set; } = "";
     }
 }

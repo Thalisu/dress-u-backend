@@ -31,7 +31,6 @@ namespace dress_u_backend.Mappers
             return new Category
             {
                 Type = categoryDto.Type,
-                /*                 Cloths = categoryDto.Cloths, */
             };
         }
     }

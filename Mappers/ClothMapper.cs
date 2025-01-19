@@ -19,8 +19,8 @@ namespace dress_u_backend.Mappers
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
-                Categories = cloth.Categories,
-                Description = cloth.Description
+                Categories = [.. cloth.Categories.Select(c => c.ToCategoryDto())],
+                /*                 Description = cloth.Description */
             };
         }
 
@@ -32,8 +32,8 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                Categories = clothDto.Categories,
-                Description = clothDto.Description,
+                /*                 Categories = clothDto.Categories, */
+                /*                 Description = clothDto.Description, */
             };
         }
         public static Cloth ToClothFromUpdateDto(this UpdateClothRequestDto clothDto)
@@ -44,8 +44,8 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                Categories = clothDto.Categories,
-                Description = clothDto.Description,
+                /*                 Categories = clothDto.Categories, */
+                /*                 Description = clothDto.Description, */
             };
         }
     }

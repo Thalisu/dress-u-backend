@@ -13,7 +13,7 @@ namespace dress_u_backend.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     [Migration("20250120153143_identit")]
-    partial class identit
+    partial class Identit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

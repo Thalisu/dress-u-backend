@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace dress_u_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class identit : Migration
+    public partial class Identit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

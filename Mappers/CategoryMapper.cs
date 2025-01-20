@@ -19,7 +19,7 @@ namespace dress_u_backend.Mappers
             };
         }
 
-        public static Category ToCategoryFromDto(this CategoryDto categoryDto)
+        public static Category ToCategoryFromUseDto(this UseCategoryDto categoryDto)
         {
             return new Category
             {

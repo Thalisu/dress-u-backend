@@ -32,7 +32,7 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                Categories = [.. clothDto.Categories.Select(CategoryMapper.ToCategoryFromDto)],
+                Categories = [.. clothDto.Categories.Select(CategoryMapper.ToCategoryFromUseDto)],
                 /*                 Description = clothDto.Description, */
             };
         }

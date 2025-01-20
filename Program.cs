@@ -1,7 +1,9 @@
 using dress_u_backend.data;
 using dress_u_backend.interfaces;
+using dress_u_backend.Interfaces;
 using dress_u_backend.models;
 using dress_u_backend.Repository;
+using dress_u_backend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Build.Framework;
@@ -62,6 +64,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IClothRepository, ClothRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

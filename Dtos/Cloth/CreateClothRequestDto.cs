@@ -13,6 +13,6 @@ namespace dress_u_backend.Dtos.Cloth
         public float Discount { get; set; }
         public string[] Images { get; set; } = [];
         /*         public Models.Description? Description { get; set; } */
-        public List<CategoryDto> Categories { get; set; } = [];
+        public List<UseCategoryDto> Categories { get; set; } = [];
     }
 }

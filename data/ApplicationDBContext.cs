@@ -23,11 +23,13 @@ namespace dress_u_backend.data
         {
             base.OnModelCreating(modelBuilder);
             List<IdentityRole> roles = [
-                new() {
+                new(){
+                    Id = "1",
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 },
-                new() {
+                new(){
+                    Id = "2",
                     Name = "User",
                     NormalizedName = "USER"
                 }

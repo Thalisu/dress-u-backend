@@ -18,6 +18,14 @@ namespace dress_u_backend.Mappers
                 Cloths = [.. category.Cloths.Select(c => c.ToClothDto())],
             };
         }
+        public static CategoryOnlyDto ToCategoryOnlyDto(this Category category)
+        {
+            return new CategoryOnlyDto
+            {
+                Id = category.Id,
+                Type = category.Type,
+            };
+        }
 
         public static Category ToCategoryFromUseDto(this UseCategoryDto categoryDto)
         {

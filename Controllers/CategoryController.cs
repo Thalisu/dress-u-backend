@@ -18,7 +18,7 @@ namespace dress_u_backend.Controllers
         public async Task<IActionResult> GetAll()
         {
             var categories = await _categoryRepo.GetAllAsync();
-            var categoryDto = categories.Select(c => c.ToCategoryDto());
+            var categoryDto = categories.Select(c => c.ToCategoryOnlyDto());
             return Ok(categoryDto);
         }
         [HttpGet("{id:int}")]

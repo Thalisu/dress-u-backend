@@ -52,6 +52,15 @@ namespace dress_u_backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
+            if (clothDto.Categories != null)
+            {
+                var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => _clothRepo.CategoryExists(c.Id)));
+                if (!allCategoriesExists.All(exists => exists))
+                {
+                    return BadRequest("One or more categories do not exist.");
+                }
+            }
+
             var cloth = await _clothRepo.UpdateAsync(id, clothDto);
             if (cloth == null)
             {

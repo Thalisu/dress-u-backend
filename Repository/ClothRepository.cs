@@ -72,5 +72,26 @@ namespace dress_u_backend.Repository
         {
             return await _context.Categories.AnyAsync(c => c.Id == id);
         }
+        public async Task<bool> CategoriesExistsInClothCreation(CreateClothRequestDto clothDto)
+        {
+            var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => CategoryExists(c.Id)));
+            if (!allCategoriesExists.All(exists => exists))
+            {
+                return false;
+            }
+            return true;
+        }
+        public async Task<bool> CategoriesExistsInClothUpdate(UpdateClothRequestDto clothDto)
+        {
+            if (clothDto.Categories != null)
+            {
+                var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => CategoryExists(c.Id)));
+                if (!allCategoriesExists.All(exists => exists))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

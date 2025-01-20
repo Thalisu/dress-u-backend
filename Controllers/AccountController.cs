@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Account;
+using dress_u_backend.Interfaces;
+using dress_u_backend.Mappers;
 using dress_u_backend.models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +13,10 @@ namespace dress_u_backend.Controllers
 {
     [ApiController]
     [Route("/account")]
-    public class AccountController(UserManager<AppUser> userManager) : ControllerBase
+    public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly ITokenService _tokenService = tokenService;
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -39,7 +42,7 @@ namespace dress_u_backend.Controllers
                     return StatusCode(500, roleResult.Errors);
                 }
 
-                return Ok();
+                return Ok(user.ToUserDto(_tokenService.CreateToken(user)));
             }
             catch (Exception e)
             {

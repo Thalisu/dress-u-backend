@@ -40,6 +40,11 @@ namespace dress_u_backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateClothRequestDto clothDto)
         {
+            var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => _clothRepo.CategoryExists(c.Id)));
+            if (!allCategoriesExists.All(exists => exists))
+            {
+                return BadRequest("One or more categories do not exist.");
+            }
             var cloth = clothDto.ToClothFromCreateDto();
             await _clothRepo.CreateAsync(cloth);
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());

@@ -26,7 +26,7 @@ namespace dress_u_backend.Controllers
             return Ok(clothDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var cloth = await _clothRepo.GetByIdAsync(id);
@@ -50,7 +50,7 @@ namespace dress_u_backend.Controllers
             await _clothRepo.CreateAsync(cloth);
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
             var categoriesExist = await _clothRepo.CategoriesExistsInClothUpdate(clothDto);
@@ -67,7 +67,7 @@ namespace dress_u_backend.Controllers
 
             return Ok(cloth);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var cloth = await _clothRepo.DeleteAsync(id);

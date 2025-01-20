@@ -21,7 +21,7 @@ namespace dress_u_backend.Controllers
             var categoryDto = categories.Select(c => c.ToCategoryDto());
             return Ok(categoryDto);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var category = await _categoryRepo.GetByIdAsync(id);
@@ -39,7 +39,7 @@ namespace dress_u_backend.Controllers
             await _categoryRepo.CreateAsync(category);
             return CreatedAtAction(nameof(GetById), new { id = category.Id }, category.ToCategoryDto());
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryRequestDto categoryDto)
         {
             var category = await _categoryRepo.UpdateAsync(id, categoryDto);
@@ -50,7 +50,7 @@ namespace dress_u_backend.Controllers
 
             return Ok(category);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var category = await _categoryRepo.DeleteAsync(id);

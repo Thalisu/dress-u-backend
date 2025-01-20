@@ -6,7 +6,7 @@ using dress_u_backend.Dtos.Cloth;
 
 namespace dress_u_backend.Dtos.Category
 {
-    public class GetAllCategoriesDto
+    public class CategoryOnlyDto
     {
         public int Id { get; set; }
         public string Type { get; set; } = "";

@@ -40,6 +40,9 @@ namespace dress_u_backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateClothRequestDto clothDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var categoriesExist = await _clothRepo.CategoriesExistsInClothCreation(clothDto);
             if (!categoriesExist)
             {
@@ -53,6 +56,9 @@ namespace dress_u_backend.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var categoriesExist = await _clothRepo.CategoriesExistsInClothUpdate(clothDto);
             if (!categoriesExist)
             {

@@ -35,6 +35,8 @@ namespace dress_u_backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var category = categoryDto.ToCategoryFromCreateDto();
             await _categoryRepo.CreateAsync(category);
             return CreatedAtAction(nameof(GetById), new { id = category.Id }, category.ToCategoryDto());
@@ -42,6 +44,8 @@ namespace dress_u_backend.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryRequestDto categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var category = await _categoryRepo.UpdateAsync(id, categoryDto);
             if (category == null)
             {

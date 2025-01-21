@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using dress_u_backend.Dtos.Cloth;
 using dress_u_backend.models;
 using Humanizer;
+using Newtonsoft.Json;
 
 namespace dress_u_backend.Mappers
 {
@@ -19,8 +20,19 @@ namespace dress_u_backend.Mappers
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
-                Categories = [.. cloth.Categories.Select(c => c.ToCategoryDto())],
-                /*                 Description = cloth.Description */
+                Categories = [.. cloth.CategoryCloths.Select(cc => cc.Category?.ToCategoryDto())],
+            };
+        }
+        public static CreateClothResponseDto ToResponseDtoFromCloth(this Cloth cloth)
+        {
+            return new CreateClothResponseDto
+            {
+                Id = cloth.Id,
+                Title = cloth.Title,
+                Price = cloth.Price,
+                Discount = cloth.Discount,
+                Images = cloth.Images,
+                CategoryIds = [.. cloth.CategoryCloths.Select(cc => cc.CategoryId)],
             };
         }
 
@@ -32,8 +44,6 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                Categories = [.. clothDto.Categories.Select(CategoryMapper.ToCategoryFromUseDto)],
-                /*                 Description = clothDto.Description, */
             };
         }
         public static Cloth ToClothFromUpdateDto(this UpdateClothRequestDto clothDto)
@@ -44,8 +54,6 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                /*                 Categories = clothDto.Categories, */
-                /*                 Description = clothDto.Description, */
             };
         }
     }

@@ -9,16 +9,16 @@ namespace dress_u_backend.Mappers
 {
     public static class CategoryMapper
     {
-        public static CategoryDto ToCategoryDto(this Category category)
+        public static CategoryDto ToCategoryWithClothsDto(this Category category)
         {
             return new CategoryDto
             {
                 Id = category.Id,
                 Type = category.Type,
-                Cloths = [.. category.Cloths.Select(c => c.ToClothDto())],
+                Cloths = [.. category.CategoryCloths.Select(cc => cc.Cloth?.ToClothDto())],
             };
         }
-        public static CategoryOnlyDto ToCategoryOnlyDto(this Category category)
+        public static CategoryOnlyDto ToCategoryDto(this Category category)
         {
             return new CategoryOnlyDto
             {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using dress_u_backend.data;
 using dress_u_backend.Dtos.Cloth;
 using dress_u_backend.interfaces;
+using dress_u_backend.Interfaces;
 using dress_u_backend.Mappers;
 using dress_u_backend.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,22 @@ namespace dress_u_backend.Controllers
 {
     [Route("/cloths")]
     [ApiController]
-    public class ClothController(IClothRepository clothRepo) : ControllerBase
+    public class ClothController(IClothRepository clothRepo, ICategoryClothRepository categoryClothRepo) : ControllerBase
     {
         private readonly IClothRepository _clothRepo = clothRepo;
+        private readonly ICategoryClothRepository _categoryClothRepo = categoryClothRepo;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var cloths = await _clothRepo.GetAllAsync();
-            var clothDto = cloths.Select(c => c.ToClothDto());
-            return Ok(clothDto);
+
+            var clothsDto = cloths.Select(c =>
+            {
+                return c.ToClothDto();
+            });
+
+            return Ok(clothsDto);
         }
 
         [HttpGet("{id:int}")]
@@ -43,27 +50,22 @@ namespace dress_u_backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var categoriesExist = await _clothRepo.CategoriesExistsInClothCreation(clothDto);
-            if (!categoriesExist)
-            {
-                return BadRequest("One or more categories do not exist.");
-            }
 
             var cloth = clothDto.ToClothFromCreateDto();
             await _clothRepo.CreateAsync(cloth);
-            return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToClothDto());
+
+            var categoryCloths = clothDto.CategoryIds
+                .Select(cId => CategoryClothMapper.ToCategoryCloth(cId, cloth.Id))
+                .ToList();
+            await _categoryClothRepo.CreateAsync(categoryCloths);
+
+            return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToResponseDtoFromCloth());
         }
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var categoriesExist = await _clothRepo.CategoriesExistsInClothUpdate(clothDto);
-            if (!categoriesExist)
-            {
-                return BadRequest("One or more categories do not exist.");
-            }
 
             var cloth = await _clothRepo.UpdateAsync(id, clothDto);
             if (cloth == null)

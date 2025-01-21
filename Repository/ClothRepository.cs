@@ -8,24 +8,28 @@ using dress_u_backend.interfaces;
 using dress_u_backend.Mappers;
 using dress_u_backend.models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace dress_u_backend.Repository
 {
-    public class ClothRepository : IClothRepository
+    public class ClothRepository(ApplicationDBContext context) : IClothRepository
     {
-        private readonly ApplicationDBContext _context;
-        public ClothRepository(ApplicationDBContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDBContext _context = context;
 
         public async Task<List<Cloth>> GetAllAsync()
         {
-            return await _context.Cloths.ToListAsync();
+            var cloths = await _context.Cloths
+                .Include(c => c.CategoryCloths)
+                    .ThenInclude(cc => cc.Category)
+                .ToListAsync();
+            return cloths;
         }
         public async Task<ClothDto?> GetByIdAsync(int id)
         {
-            var cloth = await _context.Cloths.FindAsync(id);
+            var cloth = await _context.Cloths
+                .Include(c => c.CategoryCloths)
+                    .ThenInclude(cc => cc.Category)
+                .FirstOrDefaultAsync(c => c.Id == id);
             return cloth?.ToClothDto();
         }
         public async Task<Cloth> CreateAsync(Cloth cloth)
@@ -47,7 +51,6 @@ namespace dress_u_backend.Repository
             existingCloth.Price = clothModel.Price;
             existingCloth.Discount = clothModel.Discount;
             existingCloth.Images = clothModel.Images;
-            existingCloth.Categories = clothModel.Categories;
             existingCloth.Description = clothModel.Description;
             await _context.SaveChangesAsync();
             return existingCloth.ToClothDto();
@@ -67,31 +70,6 @@ namespace dress_u_backend.Repository
         public async Task<bool> ClothExists(int id)
         {
             return await _context.Cloths.AnyAsync(c => c.Id == id);
-        }
-        public async Task<bool> CategoryExists(int id)
-        {
-            return await _context.Categories.AnyAsync(c => c.Id == id);
-        }
-        public async Task<bool> CategoriesExistsInClothCreation(CreateClothRequestDto clothDto)
-        {
-            var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => CategoryExists(c.Id)));
-            if (!allCategoriesExists.All(exists => exists))
-            {
-                return false;
-            }
-            return true;
-        }
-        public async Task<bool> CategoriesExistsInClothUpdate(UpdateClothRequestDto clothDto)
-        {
-            if (clothDto.Categories != null)
-            {
-                var allCategoriesExists = await Task.WhenAll(clothDto.Categories.Select(c => CategoryExists(c.Id)));
-                if (!allCategoriesExists.All(exists => exists))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

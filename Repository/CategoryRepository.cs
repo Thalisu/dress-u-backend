@@ -11,13 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dress_u_backend.Repository
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository(ApplicationDBContext context) : ICategoryRepository
     {
-        private readonly ApplicationDBContext _context;
-        public CategoryRepository(ApplicationDBContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDBContext _context = context;
 
         public async Task<List<Category>> GetAllAsync()
         {
@@ -25,8 +21,11 @@ namespace dress_u_backend.Repository
         }
         public async Task<CategoryDto?> GetByIdAsync(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            return category?.ToCategoryDto();
+            var category = await _context.Categories
+                .Include(c => c.CategoryCloths)
+                    .ThenInclude(cc => cc.Cloth)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            return category?.ToCategoryWithClothsDto();
         }
         public async Task<Category> CreateAsync(Category category)
         {
@@ -45,7 +44,7 @@ namespace dress_u_backend.Repository
 
             existingCategory.Type = categoryModel.Type;
             await _context.SaveChangesAsync();
-            return existingCategory.ToCategoryDto();
+            return existingCategory.ToCategoryWithClothsDto();
         }
         public async Task<Category?> DeleteAsync(int id)
         {

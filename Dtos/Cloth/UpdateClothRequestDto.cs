@@ -18,8 +18,5 @@ namespace dress_u_backend.Dtos.Cloth
         public float Discount { get; set; }
         [MinLength(1, ErrorMessage = "At least one image is required")]
         public string[] Images { get; set; } = [];
-        /*         public Models.Description? Description { get; set; } */
-        [MinLength(1, ErrorMessage = "At least one category is required")]
-        public List<UseCategoryDto> Categories { get; set; } = [];
     }
 }

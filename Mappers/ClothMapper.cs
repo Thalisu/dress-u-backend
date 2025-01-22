@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Cloth;
+using dress_u_backend.Dtos.Description;
 using dress_u_backend.models;
 using Humanizer;
 using Newtonsoft.Json;
@@ -33,6 +34,7 @@ namespace dress_u_backend.Mappers
                 Discount = cloth.Discount,
                 Images = cloth.Images,
                 CategoryIds = [.. cloth.CategoryCloths.Select(cc => cc.CategoryId)],
+                Description = cloth.Description?.ToDescriptionDto() ?? new DescriptionDto()
             };
         }
 

@@ -19,6 +19,7 @@ namespace dress_u_backend.Repository
         public async Task<List<Cloth>> GetAllAsync()
         {
             var cloths = await _context.Cloths
+                .Include(c => c.Description)
                 .Include(c => c.CategoryCloths)
                     .ThenInclude(cc => cc.Category)
                 .ToListAsync();
@@ -27,6 +28,7 @@ namespace dress_u_backend.Repository
         public async Task<ClothDto?> GetByIdAsync(int id)
         {
             var cloth = await _context.Cloths
+                .Include(c => c.Description)
                 .Include(c => c.CategoryCloths)
                     .ThenInclude(cc => cc.Category)
                 .FirstOrDefaultAsync(c => c.Id == id);

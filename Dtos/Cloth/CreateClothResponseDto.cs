@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dress_u_backend.Dtos.Description;
 
 namespace dress_u_backend.Dtos.Cloth
 {
@@ -16,6 +17,7 @@ namespace dress_u_backend.Dtos.Cloth
         public string[] Images { get; set; } = [];
         /*         public Models.Description? Description { get; set; } */
         public List<int> CategoryIds { get; set; } = [];
+        public DescriptionDto Description { get; set; } = null!;
     }
 
 }

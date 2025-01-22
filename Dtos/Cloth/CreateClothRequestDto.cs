@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Category;
+using dress_u_backend.Dtos.Description;
 
 namespace dress_u_backend.Dtos.Cloth
 {
@@ -25,5 +26,7 @@ namespace dress_u_backend.Dtos.Cloth
         [Required]
         [MinLength(1, ErrorMessage = "At least one category is required")]
         public List<int> CategoryIds { get; set; } = [];
+        [Required]
+        public CreateDescriptionRequestDto DescriptionDto { get; set; } = null!;
     }
 }

@@ -15,10 +15,17 @@ namespace dress_u_backend.Controllers
 {
     [Route("/cloths")]
     [ApiController]
-    public class ClothController(IClothRepository clothRepo, ICategoryClothRepository categoryClothRepo) : ControllerBase
+    public class ClothController : ControllerBase
     {
-        private readonly IClothRepository _clothRepo = clothRepo;
-        private readonly ICategoryClothRepository _categoryClothRepo = categoryClothRepo;
+        private readonly IClothRepository _clothRepo;
+        private readonly ICategoryClothRepository _categoryClothRepo;
+        private readonly IDescriptionRepository _descriptionRepo;
+        public ClothController(IClothRepository clothRepo, ICategoryClothRepository categoryClothRepo, IDescriptionRepository descriptionRepository)
+        {
+            _clothRepo = clothRepo;
+            _categoryClothRepo = categoryClothRepo;
+            _descriptionRepo = descriptionRepository;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -58,6 +65,7 @@ namespace dress_u_backend.Controllers
                 .Select(cId => CategoryClothMapper.ToCategoryCloth(cId, cloth.Id))
                 .ToList();
             await _categoryClothRepo.CreateAsync(categoryCloths);
+            await _descriptionRepo.CreateAsync(clothDto.DescriptionDto.ToDescriptionFromCreateDto(cloth.Id));
 
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToResponseDtoFromCloth());
         }

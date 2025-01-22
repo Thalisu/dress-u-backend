@@ -92,6 +92,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IClothRepository, ClothRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryClothRepository, CategoryClothRepository>();
+builder.Services.AddScoped<IDescriptionRepository, DescriptionRepository>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 

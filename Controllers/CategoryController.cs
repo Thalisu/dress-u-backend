@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using dress_u_backend.Dtos.Category;
 using dress_u_backend.interfaces;
 using dress_u_backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dress_u_backend.Controllers
@@ -33,6 +34,7 @@ namespace dress_u_backend.Controllers
             return Ok(category);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateCategoryRequestDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -42,6 +44,7 @@ namespace dress_u_backend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = category.Id }, category.ToCategoryDto());
         }
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryRequestDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -55,6 +58,7 @@ namespace dress_u_backend.Controllers
             return Ok(category);
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var category = await _categoryRepo.DeleteAsync(id);

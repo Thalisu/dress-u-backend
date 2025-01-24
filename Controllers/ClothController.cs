@@ -8,6 +8,7 @@ using dress_u_backend.interfaces;
 using dress_u_backend.Interfaces;
 using dress_u_backend.Mappers;
 using dress_u_backend.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,7 @@ namespace dress_u_backend.Controllers
             return Ok(cloth);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateClothRequestDto clothDto)
         {
             if (!ModelState.IsValid)
@@ -70,6 +72,7 @@ namespace dress_u_backend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToResponseDtoFromCloth());
         }
         [HttpPut("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
         {
             if (!ModelState.IsValid)
@@ -84,6 +87,7 @@ namespace dress_u_backend.Controllers
             return Ok(cloth);
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var cloth = await _clothRepo.DeleteAsync(id);

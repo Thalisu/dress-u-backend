@@ -22,10 +22,12 @@ namespace dress_u_backend.Dtos.Cloth
         [Required]
         [MinLength(1, ErrorMessage = "At least one image is required")]
         public string[] Images { get; set; } = [];
-        /*         public Models.Description? Description { get; set; } */
         [Required]
         [MinLength(1, ErrorMessage = "At least one category is required")]
         public List<int> CategoryIds { get; set; } = [];
+        [Required]
+        [Range(1, 1000000, ErrorMessage = "Stock must be between 1 and 1000000")]
+        public int Stock { get; set; }
         [Required]
         public CreateDescriptionRequestDto DescriptionDto { get; set; } = null!;
     }

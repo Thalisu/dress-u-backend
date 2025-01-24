@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Category;
+using dress_u_backend.Dtos.Description;
 
 namespace dress_u_backend.Dtos.Cloth
 {
@@ -18,5 +19,13 @@ namespace dress_u_backend.Dtos.Cloth
         public float Discount { get; set; }
         [MinLength(1, ErrorMessage = "At least one image is required")]
         public string[] Images { get; set; } = [];
+        [Required]
+        [MinLength(1, ErrorMessage = "At least one category is required")]
+        public List<int> CategoryIds { get; set; } = [];
+        [Required]
+        [Range(1, 1000000, ErrorMessage = "Stock must be between 1 and 1000000")]
+        public int Stock { get; set; }
+        [Required]
+        public UpdateDescriptionRequestDto Description { get; set; } = null!;
     }
 }

@@ -61,13 +61,20 @@ namespace dress_u_backend.Controllers
 
 
             var cloth = clothDto.ToClothFromCreateDto();
-            await _clothRepo.CreateAsync(cloth);
+            await _clothRepo.CreateAsync(cloth, false);
 
-            var categoryCloths = clothDto.CategoryIds
-                .Select(cId => CategoryClothMapper.ToCategoryCloth(cId, cloth.Id))
-                .ToList();
-            await _categoryClothRepo.CreateAsync(categoryCloths);
-            await _descriptionRepo.CreateAsync(clothDto.DescriptionDto.ToDescriptionFromCreateDto(cloth.Id));
+            var categoryClothsDto = cloth.ToCreateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
+            var categoryCloths = await _categoryClothRepo.CreateAsync(categoryClothsDto, false);
+            if (categoryCloths == null)
+            {
+                return BadRequest("CategoryCloth not created");
+            }
+
+            var description = await _descriptionRepo.CreateAsync(clothDto.DescriptionDto.ToDescriptionFromCreateDto(cloth.Id));
+            if (description == null)
+            {
+                return BadRequest("Description not created");
+            }
 
             return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToResponseDtoFromCloth());
         }
@@ -78,10 +85,19 @@ namespace dress_u_backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var cloth = await _clothRepo.UpdateAsync(id, clothDto);
+            var cloth = await _clothRepo.UpdateAsync(id, clothDto, false);
             if (cloth == null)
             {
                 return NotFound();
+            }
+
+            var categoryClothsDto = cloth.ToUpdateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
+            await _categoryClothRepo.UpdateAsync(categoryClothsDto, false);
+
+            var description = await _descriptionRepo.UpdateAsync(id, clothDto.Description);
+            if (description == null)
+            {
+                return NotFound("Description not found");
             }
 
             return Ok(cloth);

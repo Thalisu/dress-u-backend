@@ -26,5 +26,14 @@ namespace dress_u_backend.Mappers
                 Tecnical = descriptionDto.Tecnical
             };
         }
+        public static Description ToDescriptionFromUpdateDto(this UpdateDescriptionRequestDto descriptionDto, int clothId)
+        {
+            return new Description
+            {
+                ClothId = clothId,
+                About = descriptionDto.About,
+                Tecnical = descriptionDto.Tecnical
+            };
+        }
     }
 }

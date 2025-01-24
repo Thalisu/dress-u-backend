@@ -17,6 +17,7 @@ namespace dress_u_backend.models
         [Column(TypeName = "float(1, 2)")]
         public float Discount { get; set; }
         public string[] Images { get; set; } = [];
+        public int Stock { get; set; }
         public Description? Description { get; set; }
         public ICollection<CategoryCloth> CategoryCloths { get; set; } = [];
     }

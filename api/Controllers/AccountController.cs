@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using dress_u_backend.Dtos.Account;
 using dress_u_backend.Interfaces;
 using dress_u_backend.Mappers;
-using dress_u_backend.models;
+using dress_u_backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

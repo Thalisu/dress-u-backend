@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dress_u_backend.data;
+using dress_u_backend.Data;
 
 #nullable disable
 
@@ -39,7 +39,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("CategoryCloth");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Category", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +83,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Cloths");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,31 +112,31 @@ namespace dress_u_backend.Migrations
 
             modelBuilder.Entity("CategoryCloth", b =>
                 {
-                    b.HasOne("dress_u_backend.models.Category", null)
+                    b.HasOne("dress_u_backend.Models.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dress_u_backend.models.Cloth", null)
+                    b.HasOne("dress_u_backend.Models.Cloth", null)
                         .WithMany()
                         .HasForeignKey("ClothsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
-                    b.HasOne("dress_u_backend.models.Cloth", "Cloth")
+                    b.HasOne("dress_u_backend.Models.Cloth", "Cloth")
                         .WithOne("Description")
-                        .HasForeignKey("dress_u_backend.models.Description", "ClothId")
+                        .HasForeignKey("dress_u_backend.Models.Description", "ClothId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cloth");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Navigation("Description");
                 });

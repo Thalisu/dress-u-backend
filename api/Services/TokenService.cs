@@ -5,14 +5,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using app.Config;
+using dress_u_backend.Config;
 using dress_u_backend.Interfaces;
-using dress_u_backend.models;
+using dress_u_backend.Models;
 using Microsoft.IdentityModel.Tokens;
 
 
 
-namespace dress_u_backend.Service
+namespace dress_u_backend.Services
 {
     public class TokenService : ITokenService
     {

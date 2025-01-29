@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dress_u_backend.data;
+using dress_u_backend.Data;
 
 #nullable disable
 
@@ -24,7 +24,7 @@ namespace dress_u_backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Cloth");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,18 +78,18 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Description");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
-                    b.HasOne("dress_u_backend.models.Cloth", "Cloth")
+                    b.HasOne("dress_u_backend.Models.Cloth", "Cloth")
                         .WithOne("Description")
-                        .HasForeignKey("dress_u_backend.models.Description", "ClothId")
+                        .HasForeignKey("dress_u_backend.Models.Description", "ClothId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cloth");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Navigation("Description");
                 });

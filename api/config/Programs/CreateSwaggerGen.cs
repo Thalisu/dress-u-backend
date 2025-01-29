@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 
-namespace app.Config.Programs
+namespace dress_u_backend.Config.Programs
 {
     public static class CreateSwaggerGen
     {

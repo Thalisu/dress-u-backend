@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dress_u_backend.data;
+using dress_u_backend.Data;
 using dress_u_backend.Dtos.Description;
 using dress_u_backend.Interfaces;
 using dress_u_backend.Mappers;
-using dress_u_backend.models;
+using dress_u_backend.Models;
 
 namespace dress_u_backend.Repository
 {

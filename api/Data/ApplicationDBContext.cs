@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dress_u_backend.models;
 using dress_u_backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace dress_u_backend.data
+namespace dress_u_backend.Data
 {
     public class ApplicationDBContext : IdentityDbContext<AppUser>
     {

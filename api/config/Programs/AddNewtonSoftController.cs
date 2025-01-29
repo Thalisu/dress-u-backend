@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace app.Config.Programs
+namespace dress_u_backend.Config.Programs
 {
     public static class AddNewtonSoftController
     {

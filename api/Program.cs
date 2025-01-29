@@ -1,4 +1,4 @@
-using app.Config.Programs;
+using dress_u_backend.Config.Programs;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dress_u_backend.data;
+using dress_u_backend.Data;
 
 #nullable disable
 
@@ -173,7 +173,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.AppUser", b =>
+            modelBuilder.Entity("dress_u_backend.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -238,7 +238,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Category", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -255,7 +255,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,7 +282,7 @@ namespace dress_u_backend.Migrations
                     b.ToTable("Cloths");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,13 +311,13 @@ namespace dress_u_backend.Migrations
 
             modelBuilder.Entity("CategoryCloth", b =>
                 {
-                    b.HasOne("dress_u_backend.models.Category", null)
+                    b.HasOne("dress_u_backend.Models.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dress_u_backend.models.Cloth", null)
+                    b.HasOne("dress_u_backend.Models.Cloth", null)
                         .WithMany()
                         .HasForeignKey("ClothsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +335,7 @@ namespace dress_u_backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("dress_u_backend.models.AppUser", null)
+                    b.HasOne("dress_u_backend.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,7 +344,7 @@ namespace dress_u_backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("dress_u_backend.models.AppUser", null)
+                    b.HasOne("dress_u_backend.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -359,7 +359,7 @@ namespace dress_u_backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dress_u_backend.models.AppUser", null)
+                    b.HasOne("dress_u_backend.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,25 +368,25 @@ namespace dress_u_backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("dress_u_backend.models.AppUser", null)
+                    b.HasOne("dress_u_backend.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Description", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Description", b =>
                 {
-                    b.HasOne("dress_u_backend.models.Cloth", "Cloth")
+                    b.HasOne("dress_u_backend.Models.Cloth", "Cloth")
                         .WithOne("Description")
-                        .HasForeignKey("dress_u_backend.models.Description", "ClothId")
+                        .HasForeignKey("dress_u_backend.Models.Description", "ClothId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cloth");
                 });
 
-            modelBuilder.Entity("dress_u_backend.models.Cloth", b =>
+            modelBuilder.Entity("dress_u_backend.Models.Cloth", b =>
                 {
                     b.Navigation("Description");
                 });

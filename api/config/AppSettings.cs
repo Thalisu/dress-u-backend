@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace app.Config
+namespace dress_u_backend.Config
 {
     public static class AppSettings
     {

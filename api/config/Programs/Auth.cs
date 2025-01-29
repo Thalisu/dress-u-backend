@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using app.Data;
-using app.Models;
+using dress_u_backend.Data;
+using dress_u_backend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace app.Config.Programs
+namespace dress_u_backend.Config.Programs
 {
     public static class Auth
     {

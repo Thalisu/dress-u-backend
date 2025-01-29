@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Models;
 
-namespace dress_u_backend.models
+namespace dress_u_backend.Models
 {
     public class Category
     {

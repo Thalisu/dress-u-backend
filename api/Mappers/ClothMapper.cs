@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Cloth;
 using dress_u_backend.Dtos.Description;
-using dress_u_backend.models;
+using dress_u_backend.Models;
 using Humanizer;
 using Newtonsoft.Json;
 

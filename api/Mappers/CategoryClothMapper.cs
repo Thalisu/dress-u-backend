@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.CategoryCloth;
-using dress_u_backend.models;
 using dress_u_backend.Models;
 
 namespace dress_u_backend.Mappers

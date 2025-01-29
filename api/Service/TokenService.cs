@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using app.Config;
 using dress_u_backend.Interfaces;
 using dress_u_backend.models;
 using Microsoft.IdentityModel.Tokens;
@@ -17,13 +18,11 @@ namespace dress_u_backend.Service
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-#pragma warning disable CS8604 // Possible null reference argument.
         public TokenService(IConfiguration config)
         {
             _config = config;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SigningKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetJwtSigningKey()));
         }
-#pragma warning restore CS8604 // Possible null reference argument.
         public string CreateToken(AppUser user)
         {
             if (user == null || user.Email == null || user.UserName == null)

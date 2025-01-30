@@ -18,7 +18,7 @@ namespace dress_u_backend.Models
         public float Discount { get; set; }
         public string[] Images { get; set; } = [];
         public int Stock { get; set; }
-        public Description Description { get; set; } = new();
+        public Description Description { get; set; } = null!;
         public ICollection<CategoryCloth> CategoryCloths { get; set; } = [];
     }
 }

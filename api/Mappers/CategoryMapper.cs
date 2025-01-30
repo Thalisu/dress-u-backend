@@ -3,27 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dress_u_backend.Dtos.Category;
+using dress_u_backend.Dtos.Cloth;
 using dress_u_backend.Models;
 
 namespace dress_u_backend.Mappers
 {
     public static class CategoryMapper
     {
-        public static CategoryDto ToCategoryWithClothsDto(this Category category)
+        public static CategoryDto ToCategoryDto(this Category category)
         {
-            return new CategoryDto
+            List<ClothDto> cloths = [.. category.CategoryCloths.Select(cc => cc.Cloth.ToClothDto())];
+            return cloths.Count switch
             {
-                Id = category.Id,
-                Type = category.Type,
-                Cloths = [.. category.CategoryCloths.Select(cc => cc.Cloth?.ToClothDto())],
-            };
-        }
-        public static CategoryOnlyDto ToCategoryDto(this Category category)
-        {
-            return new CategoryOnlyDto
-            {
-                Id = category.Id,
-                Type = category.Type,
+                > 0 => new CategoryDto
+                {
+                    Id = category.Id,
+                    Type = category.Type,
+                    Cloths = cloths,
+                },
+                _ => new CategoryDto
+                {
+                    Id = category.Id,
+                    Type = category.Type,
+                },
             };
         }
 

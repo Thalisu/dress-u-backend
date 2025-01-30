@@ -11,7 +11,6 @@ namespace dress_u_backend.Dtos.Category
     {
         public int Id { get; set; }
         public string Type { get; set; } = "";
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<ClothDto>? Cloths { get; set; } = null;
     }
 }

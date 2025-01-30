@@ -1,4 +1,3 @@
-#pragma warning disable CS8601 // Possible null reference assignment.
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,10 @@ namespace dress_u_backend.Mappers
     {
         public static UserDto ToUserDto(this AppUser user, string token)
         {
-
+            if (user.Email == null || user.UserName == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
             return new UserDto
             {
                 Email = user.Email,
@@ -22,4 +24,3 @@ namespace dress_u_backend.Mappers
         }
     }
 }
-#pragma warning restore CS8601 // Possible null reference assignment.

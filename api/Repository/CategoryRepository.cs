@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using dress_u_backend.Common;
 using dress_u_backend.Common.Errors;
 using dress_u_backend.Data;
+using dress_u_backend.Data.Queries;
 using dress_u_backend.Dtos.Category;
+using dress_u_backend.Dtos.Cloth;
+using dress_u_backend.Dtos.Description;
 using dress_u_backend.interfaces;
 using dress_u_backend.Mappers;
 using dress_u_backend.Models;
@@ -20,24 +23,30 @@ namespace dress_u_backend.Repository
 
         public async Task<Result<CategoriesDto>> GetAllAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
-            return new CategoriesDto
+            CategoriesDto categories = new()
             {
-                Categories = [.. categories.Select(c => c.ToCategoryDto())]
+                Categories = await _context.Categories
+                    .ToCategoryDtoQuery()
+                    .ToListAsync()
             };
+
+            return categories;
         }
         public async Task<Result<CategoryDto>> GetByIdAsync(int id)
         {
-            var category = await _context.Categories
-                .Include(c => c.CategoryCloths)
-                    .ThenInclude(cc => cc.Cloth)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            CategoryDto? category = await _context.Categories
+                .Where(c => c.Id == id)
+                .ToCategoryDtoQuery(
+                    includeCloth: true,
+                    includeDescription: true,
+                    includeCategory: true).FirstOrDefaultAsync();
+
             if (category == null)
             {
                 return ApiErrors.NotFound("Category");
             }
 
-            return category.ToCategoryDto();
+            return category;
         }
         public async Task<Result<CategoryDto>> CreateAsync(Category category)
         {

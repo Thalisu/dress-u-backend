@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dress_u_backend.Dtos.Category;
 using dress_u_backend.Dtos.Cloth;
 using dress_u_backend.Dtos.Description;
 using dress_u_backend.Models;
@@ -21,7 +22,11 @@ namespace dress_u_backend.Mappers
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
-                Categories = [.. cloth.CategoryCloths.Select(cc => cc.Category?.ToCategoryDto())],
+                Categories = new()
+                {
+                    Categories = [.. cloth.CategoryCloths
+                        .Select(cc => cc.Category.ToCategoryDto())]
+                }
             };
         }
         public static CreateClothResponseDto ToResponseDtoFromCloth(this Cloth cloth)
@@ -33,8 +38,9 @@ namespace dress_u_backend.Mappers
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
-                CategoryIds = [.. cloth.CategoryCloths.Select(cc => cc.CategoryId)],
-                Description = cloth.Description?.ToDescriptionDto() ?? new DescriptionDto()
+                CategoryIds = [.. cloth.CategoryCloths.Select(
+                    cc => cc.CategoryId)],
+                Description = cloth.Description.ToDescriptionDto()
             };
         }
 

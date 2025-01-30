@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dress_u_backend.Common;
+using dress_u_backend.Common.Errors;
 using dress_u_backend.Data;
 using dress_u_backend.Dtos.Category;
 using dress_u_backend.interfaces;
@@ -11,47 +13,57 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dress_u_backend.Repository
 {
-    public class CategoryRepository(ApplicationDBContext context) : ICategoryRepository
+    public class CategoryRepository(ApplicationDBContext context)
+        : ICategoryRepository
     {
         private readonly ApplicationDBContext _context = context;
 
-        public async Task<List<Category>> GetAllAsync()
+        public async Task<Result<CategoriesDto>> GetAllAsync()
         {
-            return await _context.Categories.ToListAsync();
+            var categories = await _context.Categories.ToListAsync();
+            return new CategoriesDto
+            {
+                Categories = [.. categories.Select(c => c.ToCategoryDto())]
+            };
         }
-        public async Task<CategoryDto?> GetByIdAsync(int id)
+        public async Task<Result<CategoryDto>> GetByIdAsync(int id)
         {
             var category = await _context.Categories
                 .Include(c => c.CategoryCloths)
                     .ThenInclude(cc => cc.Cloth)
                 .FirstOrDefaultAsync(c => c.Id == id);
-            return category?.ToCategoryWithClothsDto();
+            if (category == null)
+            {
+                return ApiErrors.NotFound("Category");
+            }
+
+            return category.ToCategoryDto();
         }
-        public async Task<Category> CreateAsync(Category category)
+        public async Task<Result<CategoryDto>> CreateAsync(Category category)
         {
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
-            return category;
+            return category.ToCategoryDto();
         }
-        public async Task<CategoryDto?> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto)
+        public async Task<Result<CategoryDto>> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto)
         {
             var categoryModel = categoryDto.ToCategoryFromUpdateDto();
             var existingCategory = await _context.Categories.FindAsync(id);
             if (existingCategory == null)
             {
-                return null;
+                return ApiErrors.NotFound("Category");
             }
 
             existingCategory.Type = categoryModel.Type;
             await _context.SaveChangesAsync();
-            return existingCategory.ToCategoryWithClothsDto();
+            return existingCategory.ToCategoryDto();
         }
-        public async Task<Category?> DeleteAsync(int id)
+        public async Task<Result<Category>> DeleteAsync(int id)
         {
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
-                return null;
+                return ApiErrors.NotFound("Category");
             }
 
             _context.Categories.Remove(category);

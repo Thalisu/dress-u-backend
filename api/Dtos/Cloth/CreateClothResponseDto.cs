@@ -17,7 +17,7 @@ namespace dress_u_backend.Dtos.Cloth
         public string[] Images { get; set; } = [];
         public int Stock { get; set; }
         public List<int> CategoryIds { get; set; } = [];
-        public DescriptionDto Description { get; set; } = null!;
+        public DescriptionDto? Description { get; set; } = null;
     }
 
 }

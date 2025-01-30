@@ -15,32 +15,33 @@ namespace dress_u_backend.Mappers
     {
         public static ClothDto ToClothDto(this Cloth cloth)
         {
-            return new ClothDto
+            return new()
             {
                 Id = cloth.Id,
                 Title = cloth.Title,
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
-                Categories = new()
+                Description = cloth.Description?.ToDescriptionDto(),
+                Categories = [.. cloth.CategoryCloths.Select(cc => new CategoryDto
                 {
-                    Categories = [.. cloth.CategoryCloths
-                        .Select(cc => cc.Category.ToCategoryDto())]
-                }
+                    Id = cc.Category.Id,
+                    Type = cc.Category.Type
+                })]
             };
         }
         public static CreateClothResponseDto ToResponseDtoFromCloth(this Cloth cloth)
         {
-            return new CreateClothResponseDto
+            return new()
             {
                 Id = cloth.Id,
                 Title = cloth.Title,
                 Price = cloth.Price,
                 Discount = cloth.Discount,
                 Images = cloth.Images,
+                Description = cloth.Description?.ToDescriptionDto(),
                 CategoryIds = [.. cloth.CategoryCloths.Select(
-                    cc => cc.CategoryId)],
-                Description = cloth.Description.ToDescriptionDto()
+                    cc => cc.CategoryId)]
             };
         }
 

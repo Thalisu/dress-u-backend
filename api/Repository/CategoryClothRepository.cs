@@ -37,19 +37,19 @@ namespace dress_u_backend.Repository
             return categories;
         }
         public async Task<Result<CreateCategoryClothRequestDto>> CreateAsync(
-            CreateCategoryClothRequestDto categoryClothDto, bool save = true)
+            CreateCategoryClothRequestDto categoryClothDto)
         {
             var categoryCloths = categoryClothDto.ToCategoryClothFromCreateDto();
             await _context.CategoryCloths.AddRangeAsync(categoryCloths);
 
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return categoryClothDto;
         }
 
 
         public async Task<Result<UpdateCategoryClothRequestDto>> UpdateAsync(
-            UpdateCategoryClothRequestDto categoryClothDto, bool save = true)
+            UpdateCategoryClothRequestDto categoryClothDto)
         {
             var CategoryClothModels = categoryClothDto
                 .ToCategoryClothFromUpdateDto();
@@ -60,7 +60,7 @@ namespace dress_u_backend.Repository
             _context.CategoryCloths.RemoveRange(ExistingCategories);
             await _context.CategoryCloths.AddRangeAsync(CategoryClothModels);
 
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return categoryClothDto;
         }

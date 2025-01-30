@@ -14,8 +14,8 @@ namespace dress_u_backend.Interfaces
     {
         Task<Result<CategoriesDto>> GetByClothId(int clothId);
         Task<Result<CreateCategoryClothRequestDto>> CreateAsync(
-            CreateCategoryClothRequestDto categoryClothDto, bool save = true);
+            CreateCategoryClothRequestDto categoryClothDto);
         Task<Result<UpdateCategoryClothRequestDto>> UpdateAsync(
-            UpdateCategoryClothRequestDto categoryClothDto, bool save = true);
+            UpdateCategoryClothRequestDto categoryClothDto);
     }
 }

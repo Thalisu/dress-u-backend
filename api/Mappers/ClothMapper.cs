@@ -52,6 +52,7 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
+                Stock = clothDto.Stock
             };
         }
         public static Cloth ToClothFromUpdateDto(this UpdateClothRequestDto clothDto)

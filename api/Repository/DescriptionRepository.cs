@@ -14,13 +14,13 @@ namespace dress_u_backend.Repository
     {
         private readonly ApplicationDBContext _context = context;
 
-        public async Task<Description> CreateAsync(Description description, bool save = true)
+        public async Task<Description> CreateAsync(Description description)
         {
             await _context.Description.AddAsync(description);
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return description;
         }
-        public async Task<DescriptionDto?> UpdateAsync(int clothId, UpdateDescriptionRequestDto descriptionDto, bool save = true)
+        public async Task<DescriptionDto?> UpdateAsync(int clothId, UpdateDescriptionRequestDto descriptionDto)
         {
 
             var descriptionModel = descriptionDto.ToDescriptionFromUpdateDto(clothId);
@@ -34,7 +34,7 @@ namespace dress_u_backend.Repository
 
             existingDescription.About = descriptionModel.About;
             existingDescription.Tecnical = descriptionModel.Tecnical;
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return existingDescription.ToDescriptionDto();
 

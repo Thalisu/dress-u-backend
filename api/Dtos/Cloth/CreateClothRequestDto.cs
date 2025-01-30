@@ -29,6 +29,6 @@ namespace dress_u_backend.Dtos.Cloth
         [Range(1, 1000000, ErrorMessage = "Stock must be between 1 and 1000000")]
         public int Stock { get; set; }
         [Required]
-        public CreateDescriptionRequestDto DescriptionDto { get; set; } = null!;
+        public CreateDescriptionRequestDto Description { get; set; } = null!;
     }
 }

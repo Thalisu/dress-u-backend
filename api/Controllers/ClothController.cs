@@ -61,16 +61,16 @@ namespace dress_u_backend.Controllers
 
 
             var cloth = clothDto.ToClothFromCreateDto();
-            await _clothRepo.CreateAsync(cloth, false);
+            await _clothRepo.CreateAsync(cloth);
 
             var categoryClothsDto = cloth.ToCreateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
-            var categoryCloths = await _categoryClothRepo.CreateAsync(categoryClothsDto, false);
+            var categoryCloths = await _categoryClothRepo.CreateAsync(categoryClothsDto);
             if (categoryCloths == null)
             {
                 return BadRequest("CategoryCloth not created");
             }
 
-            var description = await _descriptionRepo.CreateAsync(clothDto.DescriptionDto.ToDescriptionFromCreateDto(cloth.Id));
+            var description = await _descriptionRepo.CreateAsync(clothDto.Description.ToDescriptionFromCreateDto(cloth.Id));
             if (description == null)
             {
                 return BadRequest("Description not created");
@@ -85,14 +85,14 @@ namespace dress_u_backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var cloth = await _clothRepo.UpdateAsync(id, clothDto, false);
+            var cloth = await _clothRepo.UpdateAsync(id, clothDto);
             if (cloth == null)
             {
                 return NotFound();
             }
 
             var categoryClothsDto = cloth.ToUpdateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
-            await _categoryClothRepo.UpdateAsync(categoryClothsDto, false);
+            await _categoryClothRepo.UpdateAsync(categoryClothsDto);
 
             var description = await _descriptionRepo.UpdateAsync(id, clothDto.Description);
             if (description == null)

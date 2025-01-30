@@ -34,13 +34,13 @@ namespace dress_u_backend.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
             return cloth?.ToClothDto();
         }
-        public async Task<Cloth?> CreateAsync(Cloth cloth, bool save = true)
+        public async Task<Cloth?> CreateAsync(Cloth cloth)
         {
             await _context.Cloths.AddAsync(cloth);
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return cloth;
         }
-        public async Task<Cloth?> UpdateAsync(int id, UpdateClothRequestDto clothDto, bool save = true)
+        public async Task<Cloth?> UpdateAsync(int id, UpdateClothRequestDto clothDto)
         {
             var clothModel = clothDto.ToClothFromUpdateDto();
             var existingCloth = await _context.Cloths.FindAsync(id);
@@ -54,7 +54,7 @@ namespace dress_u_backend.Repository
             existingCloth.Discount = clothModel.Discount;
             existingCloth.Images = clothModel.Images;
             existingCloth.Description = clothModel.Description;
-            if (save) await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return existingCloth;
         }
         public async Task<Cloth?> DeleteAsync(int id)

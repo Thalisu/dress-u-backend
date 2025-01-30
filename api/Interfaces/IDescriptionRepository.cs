@@ -10,7 +10,7 @@ namespace dress_u_backend.Interfaces
 {
     public interface IDescriptionRepository
     {
-        Task<Description> CreateAsync(Description description, bool save = true);
-        Task<DescriptionDto?> UpdateAsync(int clothId, UpdateDescriptionRequestDto descriptionDto, bool save = true);
+        Task<Description> CreateAsync(Description description);
+        Task<DescriptionDto?> UpdateAsync(int clothId, UpdateDescriptionRequestDto descriptionDto);
     }
 }

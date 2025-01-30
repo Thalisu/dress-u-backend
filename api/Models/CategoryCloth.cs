@@ -8,8 +8,8 @@ namespace dress_u_backend.Models
 {
     public class CategoryCloth
     {
-        public Category Category { get; set; } = new();
-        public Cloth Cloth { get; set; } = new();
+        public Category Category { get; set; } = null!;
+        public Cloth Cloth { get; set; } = null!;
         public int CategoryId { get; set; }
         public int ClothId { get; set; }
     }

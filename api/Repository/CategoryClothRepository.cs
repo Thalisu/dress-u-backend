@@ -20,19 +20,17 @@ namespace dress_u_backend.Repository
     {
         private readonly ApplicationDBContext _context = context;
 
-        public async Task<Result<CategoriesDto>> GetByClothId(int clothId)
+        public async Task<Result<List<CategoryDto>>> GetByClothId(int clothId)
         {
-            var categories = new CategoriesDto
-            {
-                Categories = await _context.CategoryCloths
+            List<CategoryDto> categories = await _context.CategoryCloths
                 .Where(cc => cc.ClothId == clothId)
-                .Select(cc => cc.Category.ToCategoryDto()).ToListAsync()
-            };
+                .Select(cc => cc.Category.ToCategoryDto()).ToListAsync();
 
-            if (!categories.Categories.Any())
+            if (categories.Count == 0)
             {
                 return ApiErrors.NotFound("Categories");
             }
+
 
             return categories;
         }

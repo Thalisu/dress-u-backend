@@ -21,14 +21,12 @@ namespace dress_u_backend.Repository
     {
         private readonly ApplicationDBContext _context = context;
 
-        public async Task<Result<CategoriesDto>> GetAllAsync()
+        public async Task<Result<List<CategoryDto>>> GetAllAsync()
         {
-            CategoriesDto categories = new()
-            {
-                Categories = await _context.Categories
-                    .ToCategoryDtoQuery()
-                    .ToListAsync()
-            };
+
+            List<CategoryDto> categories = await _context.Categories
+                .ToCategoryDtoQuery()
+                .ToListAsync();
 
             return categories;
         }

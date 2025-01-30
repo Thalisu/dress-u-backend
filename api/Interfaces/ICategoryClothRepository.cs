@@ -12,7 +12,7 @@ namespace dress_u_backend.Interfaces
 {
     public interface ICategoryClothRepository
     {
-        Task<Result<CategoriesDto>> GetByClothId(int clothId);
+        Task<Result<List<CategoryDto>>> GetByClothId(int clothId);
         Task<Result<CreateCategoryClothRequestDto>> CreateAsync(
             CreateCategoryClothRequestDto categoryClothDto);
         Task<Result<UpdateCategoryClothRequestDto>> UpdateAsync(

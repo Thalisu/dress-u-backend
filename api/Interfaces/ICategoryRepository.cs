@@ -10,7 +10,7 @@ namespace dress_u_backend.interfaces
 {
     public interface ICategoryRepository
     {
-        Task<Result<CategoriesDto>> GetAllAsync();
+        Task<Result<List<CategoryDto>>> GetAllAsync();
         Task<Result<CategoryDto>> GetByIdAsync(int id);
         Task<Result<CategoryDto>> CreateAsync(Category category);
         Task<Result<CategoryDto>> UpdateAsync(int id, UpdateCategoryRequestDto categoryDto);

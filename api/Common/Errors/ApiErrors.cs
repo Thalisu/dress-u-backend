@@ -7,7 +7,7 @@ namespace dress_u_backend.Common.Errors
 {
     public class ApiErrors
     {
-        public static Error NotFound(string what) => new(
-            Code: "404", Message: $"{what} not found");
+        public static Error NotFound(string what, int id) => new(
+            Code: "404", Message: $"{what} with id {id} not found");
     }
 }

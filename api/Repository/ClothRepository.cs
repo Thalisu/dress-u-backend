@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dress_u_backend.Common;
+using dress_u_backend.Common.Errors;
 using dress_u_backend.Data;
+using dress_u_backend.Data.Queries;
+using dress_u_backend.Dtos.Category;
 using dress_u_backend.Dtos.Cloth;
+using dress_u_backend.Dtos.Description;
 using dress_u_backend.interfaces;
 using dress_u_backend.Mappers;
 using dress_u_backend.Models;
@@ -16,58 +21,69 @@ namespace dress_u_backend.Repository
     {
         private readonly ApplicationDBContext _context = context;
 
-        public async Task<List<Cloth>> GetAllAsync()
+        public async Task<Result<List<ClothDto>>> GetAllAsync()
         {
-            var cloths = await _context.Cloths
-                .Include(c => c.Description)
-                .Include(c => c.CategoryCloths)
-                    .ThenInclude(cc => cc.Category)
+            List<ClothDto> cloths = await _context.Cloths
+                .ToClothDtoQuery(includeCategory: true)
                 .ToListAsync();
+
             return cloths;
         }
-        public async Task<ClothDto?> GetByIdAsync(int id)
+        public async Task<Result<ClothDto>> GetByIdAsync(int id)
         {
-            var cloth = await _context.Cloths
-                .Include(c => c.Description)
-                .Include(c => c.CategoryCloths)
-                    .ThenInclude(cc => cc.Category)
-                .FirstOrDefaultAsync(c => c.Id == id);
-            return cloth?.ToClothDto();
-        }
-        public async Task<Cloth?> CreateAsync(Cloth cloth)
-        {
-            await _context.Cloths.AddAsync(cloth);
-            await _context.SaveChangesAsync();
+            ClothDto? cloth = await _context.Cloths
+                .Where(c => c.Id == id)
+                .ToClothDtoQuery(
+                    includeCategory: true,
+                    includeDescription: true)
+
+                .FirstOrDefaultAsync();
+
+            if (cloth == null)
+            {
+                return ApiErrors.NotFound("Cloth", id);
+            }
+
             return cloth;
         }
-        public async Task<Cloth?> UpdateAsync(int id, UpdateClothRequestDto clothDto)
+        public async Task<Result<ClothDto>> CreateAsync(
+            CreateClothRequestDto clothDto)
         {
-            var clothModel = clothDto.ToClothFromUpdateDto();
+            var cloth = clothDto.ToClothFromCreateDto();
+            await _context.Cloths.AddAsync(cloth);
+            await _context.SaveChangesAsync();
+            return clothDto.ToClothDtoFromCreate(cloth.Id);
+        }
+        public async Task<Result<ClothDto>> UpdateAsync(int id, UpdateClothRequestDto clothDto)
+        {
+            var cloth = clothDto.ToClothFromUpdateDto();
             var existingCloth = await _context.Cloths.FindAsync(id);
             if (existingCloth == null)
             {
-                return null;
+                return ApiErrors.NotFound("Cloth", id);
             }
 
-            existingCloth.Title = clothModel.Title;
-            existingCloth.Price = clothModel.Price;
-            existingCloth.Discount = clothModel.Discount;
-            existingCloth.Images = clothModel.Images;
-            existingCloth.Description = clothModel.Description;
+            existingCloth.Title = cloth.Title;
+            existingCloth.Price = cloth.Price;
+            existingCloth.Discount = cloth.Discount;
+            existingCloth.Images = cloth.Images;
+            existingCloth.Description = cloth.Description;
+            existingCloth.CategoryCloths = cloth.CategoryCloths;
+
             await _context.SaveChangesAsync();
-            return existingCloth;
+            return clothDto.ToClothDtoFromUpdate(id);
         }
-        public async Task<Cloth?> DeleteAsync(int id)
+        public async Task<Result<ClothDto>> DeleteAsync(int id)
         {
             var cloth = await _context.Cloths.FindAsync(id);
             if (cloth == null)
             {
-                return null;
+                return ApiErrors.NotFound("Cloth", id);
             }
 
             _context.Cloths.Remove(cloth);
             await _context.SaveChangesAsync();
-            return cloth;
+            return cloth.ToClothDto();
         }
         public async Task<bool> ClothExists(int id)
         {

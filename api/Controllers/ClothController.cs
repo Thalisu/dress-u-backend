@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using dress_u_backend.Data;
 using dress_u_backend.Dtos.Cloth;
@@ -16,103 +17,74 @@ namespace dress_u_backend.Controllers
 {
     [Route("/cloths")]
     [ApiController]
-    public class ClothController : ControllerBase
+    public class ClothController(IClothRepository clothRepo) : ControllerBase
     {
-        private readonly IClothRepository _clothRepo;
-        private readonly ICategoryClothRepository _categoryClothRepo;
-        private readonly IDescriptionRepository _descriptionRepo;
-        public ClothController(IClothRepository clothRepo, ICategoryClothRepository categoryClothRepo, IDescriptionRepository descriptionRepository)
-        {
-            _clothRepo = clothRepo;
-            _categoryClothRepo = categoryClothRepo;
-            _descriptionRepo = descriptionRepository;
-        }
+        private readonly IClothRepository _clothRepo = clothRepo;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var cloths = await _clothRepo.GetAllAsync();
+            var result = await _clothRepo.GetAllAsync();
 
-            var clothsDto = cloths.Select(c =>
-            {
-                return c.ToClothDto();
-            });
-
-            return Ok(clothsDto);
+            return result
+                .Match<IActionResult>(Ok, error => BadRequest(error.Message));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var cloth = await _clothRepo.GetByIdAsync(id);
-            if (cloth == null)
-            {
-                return NotFound();
-            }
+            var result = await _clothRepo.GetByIdAsync(id);
 
-            return Ok(cloth);
+            return result
+                .Match<IActionResult>(Ok, error => BadRequest(error.Message));
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] CreateClothRequestDto clothDto)
+        public async Task<IActionResult> Create(
+            [FromBody] CreateClothRequestDto clothDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var result = await _clothRepo.CreateAsync(clothDto);
 
-            var cloth = clothDto.ToClothFromCreateDto();
-            await _clothRepo.CreateAsync(cloth);
-
-            var categoryClothsDto = cloth.ToCreateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
-            var categoryCloths = await _categoryClothRepo.CreateAsync(categoryClothsDto);
-            if (categoryCloths == null)
-            {
-                return BadRequest("CategoryCloth not created");
-            }
-
-            var description = await _descriptionRepo.CreateAsync(clothDto.Description.ToDescriptionFromCreateDto(cloth.Id));
-            if (description == null)
-            {
-                return BadRequest("Description not created");
-            }
-
-            return CreatedAtAction(nameof(GetById), new { id = cloth.Id }, cloth.ToResponseDtoFromCloth());
+            return result.Match<IActionResult>(
+                clothDto => CreatedAtAction(
+                    nameof(GetById), new { id = clothDto.Id }, clothDto),
+                error => BadRequest(error.Message));
         }
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClothRequestDto clothDto)
+        public async Task<IActionResult> Update(
+            [FromRoute] int id,
+            [FromBody] UpdateClothRequestDto clothDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var cloth = await _clothRepo.UpdateAsync(id, clothDto);
-            if (cloth == null)
-            {
-                return NotFound();
-            }
+            var result = await _clothRepo.UpdateAsync(id, clothDto);
 
-            var categoryClothsDto = cloth.ToUpdateCategoryClothDtoFromCategoryIds(clothDto.CategoryIds);
-            await _categoryClothRepo.UpdateAsync(categoryClothsDto);
-
-            var description = await _descriptionRepo.UpdateAsync(id, clothDto.Description);
-            if (description == null)
-            {
-                return NotFound("Description not found");
-            }
-
-            return Ok(cloth);
+            return result
+                .Match<IActionResult>(Ok, error => BadRequest(error.Message));
         }
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var cloth = await _clothRepo.DeleteAsync(id);
-            if (cloth == null)
-            {
-                return NotFound();
-            }
+            var result = await _clothRepo.DeleteAsync(id);
 
-            return NoContent();
+            return result.Match<IActionResult>(
+                _ => NoContent(),
+                error => BadRequest(error.Message));
+        }
+
+        [HttpGet("test-role")]
+        public IActionResult TestRole()
+        {
+            var user = HttpContext.User;
+            var roles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
+
+            return Ok(new { Roles = roles });
         }
     }
 }

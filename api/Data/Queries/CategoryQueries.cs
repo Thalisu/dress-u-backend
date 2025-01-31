@@ -28,6 +28,7 @@ namespace dress_u_backend.Data.Queries
                     Price = cc.Cloth.Price,
                     Discount = cc.Cloth.Discount,
                     Images = cc.Cloth.Images,
+                    Stock = cc.Cloth.Stock,
                     Description = includeDescription ? new DescriptionDto
                     {
                         About = cc.Cloth.Description.About,

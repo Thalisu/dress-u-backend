@@ -23,6 +23,7 @@ namespace dress_u_backend.Data.Queries
                 Price = c.Price,
                 Discount = c.Discount,
                 Images = c.Images,
+                Stock = c.Stock,
                 Description = includeDescription ? new DescriptionDto
                 {
                     About = c.Description.About,
@@ -32,7 +33,7 @@ namespace dress_u_backend.Data.Queries
                 {
                     Id = cc.Category.Id,
                     Type = cc.Category.Type
-                }).ToList() : null
+                }).ToList() : null,
             });
         }
     }

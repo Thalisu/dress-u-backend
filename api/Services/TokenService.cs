@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using dress_u_backend.Config;
 using dress_u_backend.Interfaces;
 using dress_u_backend.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -18,21 +19,27 @@ namespace dress_u_backend.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration config)
+        private readonly UserManager<AppUser> _UserManager;
+        public TokenService(IConfiguration config, UserManager<AppUser> manager)
         {
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetJwtSigningKey()));
+            _UserManager = manager;
+
         }
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user)
         {
             if (user == null || user.Email == null || user.UserName == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
+            var roles = await _UserManager.GetRolesAsync(user);
             var claims = new List<Claim>{
                 new(JwtRegisteredClaimNames.Email, user.Email),
                 new(JwtRegisteredClaimNames.GivenName, user.UserName)
             };
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

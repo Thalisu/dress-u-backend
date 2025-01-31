@@ -44,7 +44,7 @@ namespace dress_u_backend.Controllers
                     return StatusCode(500, roleResult.Errors);
                 }
 
-                return Ok(user.ToUserDto(_tokenService.CreateToken(user)));
+                return Ok(user.ToUserDto(await _tokenService.CreateToken(user)));
             }
             catch (Exception e)
             {
@@ -80,7 +80,7 @@ namespace dress_u_backend.Controllers
                 return Unauthorized();
             }
 
-            return Ok(user.ToUserDto(_tokenService.CreateToken(user)));
+            return Ok(user.ToUserDto(await _tokenService.CreateToken(user)));
         }
     }
 }

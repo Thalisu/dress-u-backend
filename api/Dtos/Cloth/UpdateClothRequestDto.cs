@@ -10,13 +10,16 @@ namespace dress_u_backend.Dtos.Cloth
 {
     public class UpdateClothRequestDto
     {
+        [Required]
         [MinLength(3, ErrorMessage = "Title must be at least 3 characters long")]
         [MaxLength(50, ErrorMessage = "Title cannot exceed 50 characters")]
         public string Title { get; set; } = string.Empty;
+        [Required]
         [Range(0, 1000000, ErrorMessage = "Price must be between 0 and 1000000")]
         public decimal Price { get; set; }
         [Range(0, 1, ErrorMessage = "Discount must be between 0 and 1")]
         public float Discount { get; set; }
+        [Required]
         [MinLength(1, ErrorMessage = "At least one image is required")]
         public string[] Images { get; set; } = [];
         [Required]
@@ -26,6 +29,6 @@ namespace dress_u_backend.Dtos.Cloth
         [Range(1, 1000000, ErrorMessage = "Stock must be between 1 and 1000000")]
         public int Stock { get; set; }
         [Required]
-        public UpdateDescriptionRequestDto Description { get; set; } = null!;
+        public CreateDescriptionRequestDto Description { get; set; } = null!;
     }
 }

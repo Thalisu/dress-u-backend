@@ -23,27 +23,61 @@ namespace dress_u_backend.Mappers
                 Discount = cloth.Discount,
                 Images = cloth.Images,
                 Description = cloth.Description?.ToDescriptionDto(),
-                Categories = [.. cloth.CategoryCloths.Select(cc => new CategoryDto
-                {
-                    Id = cc.Category.Id,
-                    Type = cc.Category.Type
-                })]
+                Categories = cloth.CategoryCloths == null ? null
+                    : [.. cloth.CategoryCloths.Select(cc => new CategoryDto
+                    {
+                        Id = cc.Category.Id,
+                        Type = cc.Category.Type
+                    })]
             };
         }
-        public static CreateClothResponseDto ToResponseDtoFromCloth(this Cloth cloth)
+        public static ClothDto ToClothDtoFromCreate(
+            this CreateClothRequestDto clothDto, int id)
         {
             return new()
             {
-                Id = cloth.Id,
-                Title = cloth.Title,
-                Price = cloth.Price,
-                Discount = cloth.Discount,
-                Images = cloth.Images,
-                Description = cloth.Description?.ToDescriptionDto(),
-                CategoryIds = [.. cloth.CategoryCloths.Select(
-                    cc => cc.CategoryId)]
+                Id = id,
+                Title = clothDto.Title,
+                Price = clothDto.Price,
+                Discount = clothDto.Discount,
+                Images = clothDto.Images,
+                Stock = clothDto.Stock,
+                Description = new()
+                {
+                    About = clothDto.Description.About,
+                    Tecnical = clothDto.Description.Tecnical
+                },
+                Categories = [.. clothDto.CategoryIds.Select( id => new CategoryDto
+                {
+                    Id = id,
+                }
+                )]
             };
         }
+        public static ClothDto ToClothDtoFromUpdate(
+            this UpdateClothRequestDto clothDto, int id)
+        {
+            return new()
+            {
+                Id = id,
+                Title = clothDto.Title,
+                Price = clothDto.Price,
+                Discount = clothDto.Discount,
+                Images = clothDto.Images,
+                Stock = clothDto.Stock,
+                Description = new()
+                {
+                    About = clothDto.Description.About,
+                    Tecnical = clothDto.Description.Tecnical
+                },
+                Categories = [.. clothDto.CategoryIds.Select( id => new CategoryDto
+                {
+                    Id = id,
+                }
+                )]
+            };
+        }
+
 
         public static Cloth ToClothFromCreateDto(this CreateClothRequestDto clothDto)
         {
@@ -53,9 +87,20 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
-                Stock = clothDto.Stock
+                Stock = clothDto.Stock,
+                CategoryCloths = [.. clothDto.CategoryIds.Select(
+                    categoryId => new CategoryCloth{
+                        CategoryId = categoryId,
+                    }
+                )],
+                Description = new Description
+                {
+                    About = clothDto.Description.About,
+                    Tecnical = clothDto.Description.Tecnical
+                }
             };
         }
+
         public static Cloth ToClothFromUpdateDto(this UpdateClothRequestDto clothDto)
         {
             return new Cloth
@@ -64,6 +109,17 @@ namespace dress_u_backend.Mappers
                 Price = clothDto.Price,
                 Discount = clothDto.Discount,
                 Images = clothDto.Images,
+                Stock = clothDto.Stock,
+                CategoryCloths = [.. clothDto.CategoryIds.Select(
+                    categoryId => new CategoryCloth{
+                        CategoryId = categoryId,
+                    }
+                )],
+                Description = new Description
+                {
+                    About = clothDto.Description.About,
+                    Tecnical = clothDto.Description.Tecnical
+                }
             };
         }
     }

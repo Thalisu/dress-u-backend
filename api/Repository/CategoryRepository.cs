@@ -41,7 +41,7 @@ namespace dress_u_backend.Repository
 
             if (category == null)
             {
-                return ApiErrors.NotFound("Category");
+                return ApiErrors.NotFound("Category", id);
             }
 
             return category;
@@ -58,7 +58,7 @@ namespace dress_u_backend.Repository
             var existingCategory = await _context.Categories.FindAsync(id);
             if (existingCategory == null)
             {
-                return ApiErrors.NotFound("Category");
+                return ApiErrors.NotFound("Category", id);
             }
 
             existingCategory.Type = categoryModel.Type;
@@ -70,7 +70,7 @@ namespace dress_u_backend.Repository
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
-                return ApiErrors.NotFound("Category");
+                return ApiErrors.NotFound("Category", id);
             }
 
             _context.Categories.Remove(category);

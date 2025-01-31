@@ -28,7 +28,7 @@ namespace dress_u_backend.Repository
 
             if (categories.Count == 0)
             {
-                return ApiErrors.NotFound("Categories");
+                return ApiErrors.NotFound("Categories", clothId);
             }
 
 
